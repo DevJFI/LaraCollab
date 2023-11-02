@@ -31,8 +31,7 @@ module.exports = {
         "react-hooks"
     ],
     "rules": {
-        "react/prop-types": 0,
-        "react-hooks/exhaustive-deps": 0
+        "react/prop-types": 0
     },
     "globals": {
         "route": false,
