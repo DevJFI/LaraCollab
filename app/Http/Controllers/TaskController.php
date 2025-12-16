@@ -39,6 +39,8 @@ class TaskController extends Controller
             ->with(['project' => fn ($query) => $query->withArchived()])
             ->get()
             ->mapWithKeys(function (TaskGroup $group) use ($request, $project) {
+                $prioritySort = data_get($request->input('sort', []), 'priority');
+
                 return [
                     $group->id => Task::where('project_id', $project->id)
                         ->where('group_id', $group->id)
@@ -49,6 +51,16 @@ class TaskController extends Controller
                         ->when(! $request->has('status'), fn ($query) => $query->whereNull('completed_at'))
                         ->withDefault()
                         ->when($project->isArchived(), fn ($query) => $query->with(['project' => fn ($query) => $query->withArchived()]))
+                        ->when($prioritySort, function ($query, $direction) {
+                            $direction = $direction === 'asc' ? 'asc' : 'desc';
+
+                            $query
+                                ->orderByRaw('priority IS NULL')
+                                ->orderBy('priority', $direction)
+                                ->orderByDesc('created_at');
+                        }, function ($query) {
+                            $query->orderByDesc('created_at');
+                        })
                         ->get(),
                 ];
             });

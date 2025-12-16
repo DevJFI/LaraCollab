@@ -26,6 +26,7 @@ import LabelsDropdown from './LabelsDropdown';
 import Timer from './Timer';
 import classes from './css/TaskDrawer.module.css';
 import { PricingType } from '@/utils/enums';
+import { getTaskPriorityOptions, getTaskPriorityConfig } from '@/utils/taskPriority';
 
 export function EditTaskDrawer() {
   const editorRef = useRef(null);
@@ -55,6 +56,7 @@ export function EditTaskDrawer() {
     description: '',
     pricing_type: PricingType.HOURLY,
     estimation: 0,
+    priority: '',
     fixed_price: 0,
     due_on: '',
     hidden_from_clients: false,
@@ -78,6 +80,7 @@ export function EditTaskDrawer() {
         description: task?.description || '',
         pricing_type: task?.pricing_type || PricingType.HOURLY,
         estimation: task?.estimation || 0,
+        priority: task?.priority || '',
         fixed_price: task?.fixed_price ? task.fixed_price / 100 : 0,
         due_on: task?.due_on ? dayjs(task?.due_on).toDate() : '',
         hidden_from_clients:
@@ -125,6 +128,16 @@ export function EditTaskDrawer() {
     { value: PricingType.HOURLY, label: 'Hourly' },
     { value: PricingType.FIXED, label: 'Fixed' },
   ];
+
+  const priorityOptions = getTaskPriorityOptions().map((option) => ({
+    ...option,
+    leftSection: (
+      <span
+        className="inline-block h-2.5 w-2.5 rounded-full"
+        style={{ backgroundColor: `var(--mantine-color-${option.color}-5)` }}
+      />
+    ),
+  }));
 
   const isFixedPrice = data.pricing_type === PricingType.FIXED;
   const currencySymbol = currency?.symbol || '';
@@ -274,6 +287,18 @@ export function EditTaskDrawer() {
                 step={0.5}
                 suffix=' hours'
                 onChange={value => updateValue('estimation', value)}
+                readOnly={!can('edit task')}
+              />
+
+              <Select
+                label='Priority'
+            placeholder='Select priority'
+                mt='md'
+                data={priorityOptions}
+                value={data.priority?.toString() || null}
+                clearable
+                onChange={value => updateValue('priority', value ? Number(value) : '')}
+                onBlur={() => onBlurUpdate('priority')}
                 readOnly={!can('edit task')}
               />
 

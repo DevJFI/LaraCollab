@@ -1,7 +1,8 @@
 import useTaskGroupsStore from "@/hooks/store/useTaskGroupsStore";
 import useTaskFiltersStore from "@/hooks/store/useTaskFiltersStore";
+import useTaskPrioritySorting from "@/hooks/useTaskPrioritySorting";
 import { usePage } from "@inertiajs/react";
-import { ColorSwatch, Stack, Text } from "@mantine/core";
+import { Button, ColorSwatch, Group, Stack, Text } from "@mantine/core";
 import FilterButton from "./Filters/FilterButton";
 
 export default function Filters() {
@@ -10,10 +11,39 @@ export default function Filters() {
   const { groups } = useTaskGroupsStore();
   const { filters, toggleArrayFilter, toggleObjectFilter, toggleValueFilter } =
     useTaskFiltersStore();
+  const { currentDirection, sortHighToLow, sortLowToHigh, clearPrioritySort } =
+    useTaskPrioritySorting();
 
   return (
     <>
       <Stack justify="flex-start" gap={24}>
+        <div>
+          <Text fz="xs" fw={700} tt="uppercase" mb="sm">
+            Priority sort
+          </Text>
+          <Group gap="xs">
+            <Button
+              size="xs"
+              variant={currentDirection === "asc" ? "filled" : "light"}
+              onClick={sortHighToLow}
+            >
+              High → Low
+            </Button>
+            <Button
+              size="xs"
+              variant={currentDirection === "desc" ? "filled" : "light"}
+              onClick={sortLowToHigh}
+            >
+              Low → High
+            </Button>
+            {currentDirection && (
+              <Button size="xs" variant="subtle" onClick={clearPrioritySort}>
+                Default
+              </Button>
+            )}
+          </Group>
+        </div>
+
         {groups.length > 0 && (
           <div>
             <Text fz="xs" fw={700} tt="uppercase" mb="sm">

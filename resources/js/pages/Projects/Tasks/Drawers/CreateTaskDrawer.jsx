@@ -22,6 +22,7 @@ import { useEffect } from 'react';
 import LabelsDropdown from './LabelsDropdown';
 import classes from './css/TaskDrawer.module.css';
 import { PricingType } from '@/utils/enums';
+import { getTaskPriorityOptions } from '@/utils/taskPriority';
 
 export function CreateTaskDrawer() {
   const { create, closeCreateTask } = useTaskDrawerStore();
@@ -41,6 +42,7 @@ export function CreateTaskDrawer() {
     description: '',
     pricing_type: project?.default_pricing_type || PricingType.HOURLY,
     estimation: '',
+    priority: '',
     fixed_price: '',
     due_on: '',
     hidden_from_clients: false,
@@ -57,6 +59,16 @@ export function CreateTaskDrawer() {
       ...initial,
     }
   );
+
+  const priorityOptions = getTaskPriorityOptions().map((option) => ({
+    ...option,
+    leftSection: (
+      <span
+        className="inline-block h-2.5 w-2.5 rounded-full"
+        style={{ backgroundColor: `var(--mantine-color-${option.color}-5)` }}
+      />
+    ),
+  }));
 
   useEffect(() => {
     updateValue({ ...initial });
@@ -241,6 +253,17 @@ export function CreateTaskDrawer() {
             step={0.5}
             suffix=' hours'
             onChange={value => updateValue('estimation', value)}
+          />
+
+          <Select
+            label='Priority'
+            placeholder='Select priority'
+            mt='md'
+            data={priorityOptions}
+            value={form.data.priority?.toString() || null}
+            clearable
+            onChange={value => updateValue('priority', value ? Number(value) : '')}
+            error={form.errors.priority}
           />
 
           <Select

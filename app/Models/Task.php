@@ -38,6 +38,7 @@ class Task extends Model implements AuditableContract, Sortable
         'description',
         'due_on',
         'estimation',
+        'priority',
         'pricing_type',
         'fixed_price',
         'hidden_from_clients',
@@ -58,6 +59,7 @@ class Task extends Model implements AuditableContract, Sortable
         'hidden_from_clients' => 'boolean',
         'billable' => 'boolean',
         'estimation' => 'float',
+        'priority' => 'integer',
         'fixed_price' => 'integer',
         'pricing_type' => PricingType::class,
     ];

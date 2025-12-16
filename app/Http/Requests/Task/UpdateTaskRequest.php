@@ -29,6 +29,7 @@ class UpdateTaskRequest extends FormRequest
             'assigned_to_user_id' => ['nullable', 'exists:users,id'],
             'description' => ['nullable'],
             'estimation' => ['nullable'],
+            'priority' => ['nullable', 'integer', 'between:1,5'],
             'pricing_type' => ['string', Rule::enum(PricingType::class)],
             'fixed_price' => ['nullable', 'numeric', 'min:0'],
             'due_on' => ['nullable'],

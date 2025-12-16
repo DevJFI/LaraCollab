@@ -1,6 +1,7 @@
 import { Label } from "@/components/Label";
 import useTaskDrawerStore from "@/hooks/store/useTaskDrawerStore";
 import { isOverdue } from "@/utils/task";
+import { getTaskPriorityConfig } from "@/utils/taskPriority";
 import { getInitials } from "@/utils/user";
 import { Draggable } from "@hello-pangea/dnd";
 import { Link } from "@inertiajs/react";
@@ -11,6 +12,7 @@ import classes from "./css/TaskCard.module.css";
 export default function TaskCard({ task, index }) {
   const { openEditTask } = useTaskDrawerStore();
   const computedColorScheme = useComputedColorScheme();
+  const priorityConfig = getTaskPriorityConfig(task.priority);
 
   return (
     <Draggable draggableId={"task-" + task.id} index={index}>
@@ -23,15 +25,30 @@ export default function TaskCard({ task, index }) {
           }`}
         >
           <div {...(can("reorder task") && provided.dragHandleProps)}>
-            <Text
-              className={classes.name}
-              size="xs"
-              fw={500}
-              c={isOverdue(task) && task.completed_at === null ? "red.7" : ""}
-              onClick={() => openEditTask(task)}
-            >
-              #{task.number + ": " + task.name}
-            </Text>
+            <Group justify="space-between" align="center">
+              <Text
+                className={classes.name}
+                size="xs"
+                fw={500}
+                c={isOverdue(task) && task.completed_at === null ? "red.7" : ""}
+                onClick={() => openEditTask(task)}
+              >
+                #{task.number + ": " + task.name}
+              </Text>
+
+              {priorityConfig && (
+                <Tooltip label={priorityConfig.label} withArrow openDelay={300}>
+                  <div
+                    aria-label={priorityConfig.label}
+                    className="flex items-center"
+                  >
+                    <span
+                      className={`inline-block h-2 w-2 rounded-full bg-${priorityConfig.color}-5`}
+                    />
+                  </div>
+                </Tooltip>
+              )}
+            </Group>
 
             <Group wrap="nowrap" justify="space-between">
               <Group wrap="wrap" style={{ rowGap: rem(3), columnGap: rem(12) }} mt={5}>
