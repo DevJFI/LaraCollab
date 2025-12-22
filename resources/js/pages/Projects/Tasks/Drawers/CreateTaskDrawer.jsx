@@ -20,9 +20,9 @@ import {
 import { DateInput } from '@mantine/dates';
 import { useEffect } from 'react';
 import LabelsDropdown from './LabelsDropdown';
+import PriorityDropdown from './PriorityDropdown';
 import classes from './css/TaskDrawer.module.css';
 import { PricingType } from '@/utils/enums';
-import { getTaskPriorityOptions } from '@/utils/taskPriority';
 
 export function CreateTaskDrawer() {
   const { create, closeCreateTask } = useTaskDrawerStore();
@@ -59,16 +59,6 @@ export function CreateTaskDrawer() {
       ...initial,
     }
   );
-
-  const priorityOptions = getTaskPriorityOptions().map((option) => ({
-    ...option,
-    leftSection: (
-      <span
-        className="inline-block h-2.5 w-2.5 rounded-full"
-        style={{ backgroundColor: `var(--mantine-color-${option.color}-5)` }}
-      />
-    ),
-  }));
 
   useEffect(() => {
     updateValue({ ...initial });
@@ -255,16 +245,12 @@ export function CreateTaskDrawer() {
             onChange={value => updateValue('estimation', value)}
           />
 
-          <Select
-            label='Priority'
-            placeholder='Select priority'
+          <PriorityDropdown
+            value={form.data.priority}
+            onChange={value => updateValue('priority', value)}
             mt='md'
-            data={priorityOptions}
-            value={form.data.priority?.toString() || null}
-            clearable
-            onChange={value => updateValue('priority', value ? Number(value) : '')}
-            error={form.errors.priority}
           />
+
 
           <Select
             label='Pricing type'

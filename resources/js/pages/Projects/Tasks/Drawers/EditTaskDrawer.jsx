@@ -23,10 +23,10 @@ import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import Comments from './Comments';
 import LabelsDropdown from './LabelsDropdown';
+import PriorityDropdown from './PriorityDropdown';
 import Timer from './Timer';
 import classes from './css/TaskDrawer.module.css';
 import { PricingType } from '@/utils/enums';
-import { getTaskPriorityOptions, getTaskPriorityConfig } from '@/utils/taskPriority';
 
 export function EditTaskDrawer() {
   const editorRef = useRef(null);
@@ -128,16 +128,6 @@ export function EditTaskDrawer() {
     { value: PricingType.HOURLY, label: 'Hourly' },
     { value: PricingType.FIXED, label: 'Fixed' },
   ];
-
-  const priorityOptions = getTaskPriorityOptions().map((option) => ({
-    ...option,
-    leftSection: (
-      <span
-        className="inline-block h-2.5 w-2.5 rounded-full"
-        style={{ backgroundColor: `var(--mantine-color-${option.color}-5)` }}
-      />
-    ),
-  }));
 
   const isFixedPrice = data.pricing_type === PricingType.FIXED;
   const currencySymbol = currency?.symbol || '';
@@ -290,16 +280,12 @@ export function EditTaskDrawer() {
                 readOnly={!can('edit task')}
               />
 
-              <Select
-                label='Priority'
-            placeholder='Select priority'
+              <PriorityDropdown
+                value={data.priority}
+                onChange={value => {
+                  updateValue('priority', value || '');
+                }}
                 mt='md'
-                data={priorityOptions}
-                value={data.priority?.toString() || null}
-                clearable
-                onChange={value => updateValue('priority', value ? Number(value) : '')}
-                onBlur={() => onBlurUpdate('priority')}
-                readOnly={!can('edit task')}
               />
 
               <Select
