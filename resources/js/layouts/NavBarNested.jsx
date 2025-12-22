@@ -70,7 +70,7 @@ export default function Sidebar() {
         icon: IconSettings,
         active: route().current("settings.*"),
         opened: route().current("settings.*"),
-        visible: can("view owner company") || can("view roles") || can("view labels"),
+        visible: can("view owner company") || can("view roles") || can("view labels") || can("view task_priority"),
         links: [
           {
             label: "Company",
@@ -89,6 +89,12 @@ export default function Sidebar() {
             link: route("settings.labels.index"),
             active: route().current("settings.labels.*"),
             visible: can("view labels"),
+          },
+          {
+            label: "Priorities",
+            link: route("settings.task-priorities.index"),
+            active: route().current("settings.task-priorities.*"),
+            visible: can("view task_priority"),
           },
         ],
       },

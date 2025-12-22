@@ -38,7 +38,7 @@ class Task extends Model implements AuditableContract, Sortable
         'description',
         'due_on',
         'estimation',
-        'priority',
+        'priority_id',
         'pricing_type',
         'fixed_price',
         'hidden_from_clients',
@@ -79,6 +79,7 @@ class Task extends Model implements AuditableContract, Sortable
         'assignedToUser:id,name,avatar',
         'subscribedUsers:id',
         'labels:id,name,color',
+        'priority:id,label,color,order',
         'attachments',
         'timeLogs.user:id,name',
     ];
@@ -135,6 +136,11 @@ class Task extends Model implements AuditableContract, Sortable
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
+    }
+
+    public function priority(): BelongsTo
+    {
+        return $this->belongsTo(TaskPriority::class, 'priority_id');
     }
 
     public function subscribedUsers(): BelongsToMany

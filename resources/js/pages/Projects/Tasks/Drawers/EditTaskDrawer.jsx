@@ -56,7 +56,7 @@ export function EditTaskDrawer() {
     description: '',
     pricing_type: PricingType.HOURLY,
     estimation: 0,
-    priority: '',
+    priority_id: '',
     fixed_price: 0,
     due_on: '',
     hidden_from_clients: false,
@@ -80,7 +80,7 @@ export function EditTaskDrawer() {
         description: task?.description || '',
         pricing_type: task?.pricing_type || PricingType.HOURLY,
         estimation: task?.estimation || 0,
-        priority: task?.priority || '',
+        priority_id: task?.priority_id || '',
         fixed_price: task?.fixed_price ? task.fixed_price / 100 : 0,
         due_on: task?.due_on ? dayjs(task?.due_on).toDate() : '',
         hidden_from_clients:
@@ -281,9 +281,9 @@ export function EditTaskDrawer() {
               />
 
               <PriorityDropdown
-                value={data.priority}
+                value={data.priority_id}
                 onChange={value => {
-                  updateValue('priority', value || '');
+                  updateValue('priority_id', value ?? '');
                 }}
                 mt='md'
               />

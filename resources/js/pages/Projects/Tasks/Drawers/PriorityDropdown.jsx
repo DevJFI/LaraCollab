@@ -1,4 +1,4 @@
-import { getTaskPriorityConfig, getTaskPriorityOptions } from '@/utils/taskPriority';
+import { usePage } from '@inertiajs/react';
 import {
   Box,
   ColorSwatch,
@@ -16,17 +16,17 @@ export default function PriorityDropdown({ value, onChange, ...props }) {
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
-  const options = getTaskPriorityOptions();
-  const selectedPriority = value ? getTaskPriorityConfig(value) : null;
+  const { priorities } = usePage().props;
+  const selectedPriority = priorities?.find((p) => p.id === value);
 
   const handleSelect = (val) => {
-    onChange(val);
+    onChange(val ? Number(val) : null);
     combobox.closeDropdown();
   };
 
   const handleClear = (e) => {
     e.stopPropagation();
-    onChange('');
+    onChange(null);
   };
 
   return (
@@ -60,7 +60,7 @@ export default function PriorityDropdown({ value, onChange, ...props }) {
             {selectedPriority ? (
               <Group gap={7}>
                 <ColorSwatch
-                  color={`var(--mantine-color-${selectedPriority.color}-5)`}
+                  color={selectedPriority.color}
                   size={10}
                 />
                 <Text size='sm'>{selectedPriority.label}</Text>
@@ -73,18 +73,18 @@ export default function PriorityDropdown({ value, onChange, ...props }) {
 
         <Combobox.Dropdown>
           <Combobox.Options>
-            {options.map((option) => (
+            {priorities?.map((priority) => (
               <Combobox.Option
-                value={option.value}
-                key={option.value}
-                active={value?.toString() === option.value}
+                value={priority.id.toString()}
+                key={priority.id}
+                active={value === priority.id}
               >
                 <Group gap={7}>
                   <ColorSwatch
-                    color={`var(--mantine-color-${option.color}-5)`}
+                    color={priority.color}
                     size={10}
                   />
-                  <Text size='sm'>{option.label}</Text>
+                  <Text size='sm'>{priority.label}</Text>
                 </Group>
               </Combobox.Option>
             ))}

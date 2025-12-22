@@ -15,6 +15,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Settings\LabelController;
 use App\Http\Controllers\Settings\OwnerCompanyController;
 use App\Http\Controllers\Settings\RoleController;
+use App\Http\Controllers\Settings\TaskPriorityController;
 use App\Http\Controllers\Task\AttachmentController;
 use App\Http\Controllers\Task\CommentController;
 use App\Http\Controllers\Task\GroupController;
@@ -124,6 +125,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::resource('labels', LabelController::class)->except(['show']);
         Route::post('labels/{labelId}/restore', [LabelController::class, 'restore'])->name('labels.restore');
+
+        Route::resource('task-priorities', TaskPriorityController::class)->except(['show']);
+        Route::post('task-priorities/{priorityId}/restore', [TaskPriorityController::class, 'restore'])->name('task-priorities.restore');
     });
 
     // Account

@@ -11,6 +11,7 @@ use App\Events\Task\TaskRestored;
 use App\Events\Task\TaskUpdated;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Http\Resources\TaskPriorityResource;
 use App\Models\Label;
 use App\Models\OwnerCompany;
 use App\Models\Project;
@@ -69,6 +70,7 @@ class TaskController extends Controller
             'project' => $project,
             'usersWithAccessToProject' => PermissionService::usersWithAccessToProject($project),
             'labels' => Label::get(['id', 'name', 'color']),
+            'priorities' => TaskPriorityResource::collection(\App\Models\TaskPriority::orderBy('order')->get()),
             'taskGroups' => $groups,
             'groupedTasks' => $groupedTasks,
             'openedTask' => $task ? $task->loadDefault() : null,

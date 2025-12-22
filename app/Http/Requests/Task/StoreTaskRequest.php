@@ -29,7 +29,7 @@ class StoreTaskRequest extends FormRequest
             'assigned_to_user_id' => ['nullable', 'exists:users,id'],
             'description' => ['nullable'],
             'estimation' => ['nullable'],
-            'priority' => ['nullable', 'integer', 'between:1,5'],
+            'priority_id' => ['nullable', 'exists:task_priorities,id'],
             'pricing_type' => ['required', 'string', Rule::enum(PricingType::class)],
             'fixed_price' => ['nullable', 'numeric', 'min:0', Rule::when($this->pricing_type === PricingType::FIXED->value, 'present')],
             'due_on' => ['nullable'],
