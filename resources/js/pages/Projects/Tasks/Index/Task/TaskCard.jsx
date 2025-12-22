@@ -1,18 +1,16 @@
 import { Label } from "@/components/Label";
 import useTaskDrawerStore from "@/hooks/store/useTaskDrawerStore";
 import { isOverdue } from "@/utils/task";
-import { getTaskPriorityConfig } from "@/utils/taskPriority";
 import { getInitials } from "@/utils/user";
 import { Draggable } from "@hello-pangea/dnd";
 import { Link } from "@inertiajs/react";
-import { Avatar, Group, Text, Tooltip, rem, useComputedColorScheme } from "@mantine/core";
+import { Avatar, ColorSwatch, Group, Text, Tooltip, rem, useComputedColorScheme } from "@mantine/core";
 import TaskActions from "../TaskActions";
 import classes from "./css/TaskCard.module.css";
 
 export default function TaskCard({ task, index }) {
   const { openEditTask } = useTaskDrawerStore();
   const computedColorScheme = useComputedColorScheme();
-  const priorityConfig = getTaskPriorityConfig(task.priority);
 
   return (
     <Draggable draggableId={"task-" + task.id} index={index}>
@@ -36,16 +34,9 @@ export default function TaskCard({ task, index }) {
                 #{task.number + ": " + task.name}
               </Text>
 
-              {priorityConfig && (
-                <Tooltip label={priorityConfig.label} withArrow openDelay={300}>
-                  <div
-                    aria-label={priorityConfig.label}
-                    className="flex items-center"
-                  >
-                    <span
-                      className={`inline-block h-2 w-2 rounded-full bg-${priorityConfig.color}-5`}
-                    />
-                  </div>
+              {task.priority && (
+                <Tooltip label={task.priority.label} withArrow openDelay={300}>
+                  <ColorSwatch color={task.priority.color} size={12} />
                 </Tooltip>
               )}
             </Group>

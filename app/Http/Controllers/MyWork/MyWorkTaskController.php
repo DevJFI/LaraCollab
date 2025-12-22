@@ -33,9 +33,11 @@ class MyWorkTaskController extends Controller
                                 $direction = $direction === 'asc' ? 'asc' : 'desc';
 
                                 $query
-                                    ->orderByRaw('priority IS NULL')
-                                    ->orderBy('priority', $direction)
-                                    ->orderByRaw('-due_on DESC');
+                                    ->leftJoin('task_priorities', 'tasks.priority_id', '=', 'task_priorities.id')
+                                    ->orderByRaw('tasks.priority_id IS NULL')
+                                    ->orderBy('task_priorities.order', $direction)
+                                    ->orderByRaw('-tasks.due_on DESC')
+                                    ->select('tasks.*');
                             }, function ($query) {
                                 $query->orderByRaw('-due_on DESC');
                             })

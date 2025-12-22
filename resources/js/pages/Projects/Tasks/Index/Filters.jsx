@@ -1,6 +1,5 @@
 import useTaskGroupsStore from "@/hooks/store/useTaskGroupsStore";
 import useTaskFiltersStore from "@/hooks/store/useTaskFiltersStore";
-import useTaskPrioritySorting from "@/hooks/useTaskPrioritySorting";
 import { usePage } from "@inertiajs/react";
 import { Button, ColorSwatch, Group, Stack, Text } from "@mantine/core";
 import FilterButton from "./Filters/FilterButton";
@@ -9,10 +8,8 @@ export default function Filters() {
   const { usersWithAccessToProject, labels } = usePage().props;
 
   const { groups } = useTaskGroupsStore();
-  const { filters, toggleArrayFilter, toggleObjectFilter, toggleValueFilter } =
+  const { filters, toggleArrayFilter, toggleObjectFilter, toggleValueFilter, prioritySort, sortHighToLow, sortLowToHigh, clearPrioritySort } =
     useTaskFiltersStore();
-  const { currentDirection, sortHighToLow, sortLowToHigh, clearPrioritySort } =
-    useTaskPrioritySorting();
 
   return (
     <>
@@ -24,19 +21,19 @@ export default function Filters() {
           <Group gap="xs">
             <Button
               size="xs"
-              variant={currentDirection === "asc" ? "filled" : "light"}
+              variant={prioritySort === "asc" ? "filled" : "light"}
               onClick={sortHighToLow}
             >
               High → Low
             </Button>
             <Button
               size="xs"
-              variant={currentDirection === "desc" ? "filled" : "light"}
+              variant={prioritySort === "desc" ? "filled" : "light"}
               onClick={sortLowToHigh}
             >
               Low → High
             </Button>
-            {currentDirection && (
+            {prioritySort && (
               <Button size="xs" variant="subtle" onClick={clearPrioritySort}>
                 Default
               </Button>

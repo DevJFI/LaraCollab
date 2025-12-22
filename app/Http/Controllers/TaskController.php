@@ -56,9 +56,11 @@ class TaskController extends Controller
                             $direction = $direction === 'asc' ? 'asc' : 'desc';
 
                             $query
-                                ->orderByRaw('priority IS NULL')
-                                ->orderBy('priority', $direction)
-                                ->orderByDesc('created_at');
+                                ->leftJoin('task_priorities', 'tasks.priority_id', '=', 'task_priorities.id')
+                                ->orderByRaw('tasks.priority_id IS NULL')
+                                ->orderBy('task_priorities.order', $direction)
+                                ->orderByDesc('tasks.created_at')
+                                ->select('tasks.*');
                         }, function ($query) {
                             $query->orderByDesc('created_at');
                         })
