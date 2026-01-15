@@ -32,12 +32,13 @@ export function EditTaskDrawer() {
   const editorRef = useRef(null);
   const { edit, openEditTask, closeEditTask } = useTaskDrawerStore();
   const { initTaskWebSocket } = useWebSockets();
-  const { findTask, updateTaskProperty, complete, deleteAttachment, uploadAttachments } =
+  const { findTask, updateTaskProperty, updateTaskPropertyWithPriority, complete, deleteAttachment, uploadAttachments } =
     useTasksStore();
   const {
     usersWithAccessToProject,
     taskGroups,
     labels,
+    priorities,
     openedTask,
     currency,
     auth: { user },
@@ -109,6 +110,9 @@ export function EditTaskDrawer() {
         ),
       };
       updateTaskProperty(task, field, value, options[field]);
+    } else if (field === 'priority_id') {
+      const priority = value ? priorities.find(p => p.id === value) : null;
+      updateTaskPropertyWithPriority(task, value, priority);
     } else if (!onBlurInputs.includes(field)) {
       updateTaskProperty(task, field, value);
     }
@@ -283,7 +287,7 @@ export function EditTaskDrawer() {
               <PriorityDropdown
                 value={data.priority_id}
                 onChange={value => {
-                  updateValue('priority_id', value ?? '');
+                  updateValue('priority_id', value || null);
                 }}
                 mt='md'
               />

@@ -42,7 +42,7 @@ export function CreateTaskDrawer() {
     description: '',
     pricing_type: project?.default_pricing_type || PricingType.HOURLY,
     estimation: '',
-    priority_id: '',
+    priority_id: null,
     fixed_price: '',
     due_on: '',
     hidden_from_clients: false,
@@ -247,7 +247,7 @@ export function CreateTaskDrawer() {
 
           <PriorityDropdown
             value={form.data.priority_id}
-            onChange={value => updateValue('priority_id', value === null ? '' : value)}
+            onChange={value => updateValue('priority_id', value || null)}
             mt='md'
           />
 

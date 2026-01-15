@@ -62,6 +62,26 @@ const useTasksStore = create((set, get) => ({
       alert("Failed to save task property change");
     }
   },
+  updateTaskPropertyWithPriority: async (task, priorityId, priorityObject) => {
+    try {
+      await axios
+        .put(
+          route("projects.tasks.update", [task.project_id, task.id]),
+          { priority_id: priorityId },
+          { progress: false },
+        );
+
+      return set(produce(state => {
+        const index = state.tasks[task.group_id].findIndex((i) => i.id === task.id);
+
+        state.tasks[task.group_id][index].priority_id = priorityId;
+        state.tasks[task.group_id][index].priority = priorityObject;
+      }));
+    } catch (e) {
+      console.error(e);
+      alert("Failed to save task priority change");
+    }
+  },
   complete: (task, checked) => {
     const newState = checked ? true : null;
     const index = get().tasks[task.group_id].findIndex((i) => i.id === task.id);
