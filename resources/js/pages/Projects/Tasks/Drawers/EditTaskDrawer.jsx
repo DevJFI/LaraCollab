@@ -32,7 +32,7 @@ export function EditTaskDrawer() {
   const editorRef = useRef(null);
   const { edit, openEditTask, closeEditTask } = useTaskDrawerStore();
   const { initTaskWebSocket } = useWebSockets();
-  const { findTask, updateTaskProperty, updateTaskPropertyWithPriority, complete, deleteAttachment, uploadAttachments } =
+  const { findTask, updateTaskProperty, complete, deleteAttachment, uploadAttachments } =
     useTasksStore();
   const {
     usersWithAccessToProject,
@@ -112,7 +112,7 @@ export function EditTaskDrawer() {
       updateTaskProperty(task, field, value, options[field]);
     } else if (field === 'priority_id') {
       const priority = value ? priorities.find(p => p.id === value) : null;
-      updateTaskPropertyWithPriority(task, value, priority);
+      updateTaskProperty(task, field, value, priority);
     } else if (!onBlurInputs.includes(field)) {
       updateTaskProperty(task, field, value);
     }
