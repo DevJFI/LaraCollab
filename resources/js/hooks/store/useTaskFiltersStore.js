@@ -133,7 +133,11 @@ const useTaskFiltersStore = create((set, get) => ({
     return set(
       produce((state) => {
         state.prioritySort = null;
-        reloadWithoutQueryParams({ exclude: ['sort'] });
+        const params = currentUrlParams();
+        const newParams = { ...params };
+        delete newParams['sort[priority]'];
+
+        reloadWithQuery(newParams);
       })
     );
   },

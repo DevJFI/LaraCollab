@@ -25,6 +25,15 @@ export default function TaskRow({ task, index }) {
           }`}
           wrap="nowrap"
         >
+          {task.priority && (
+            <Tooltip label={task.priority.label + " priority"} withArrow openDelay={300}>
+              <div
+                className={classes.priorityIndicator}
+                style={{ backgroundColor: task.priority.color }}
+              />
+            </Tooltip>
+          )}
+
           <Group gap="sm" wrap="nowrap" w="100%">
             <div {...provided.dragHandleProps}>
               <IconGripVertical
@@ -46,6 +55,7 @@ export default function TaskRow({ task, index }) {
               onChange={(e) => complete(task, e.currentTarget.checked)}
               className={can("complete task") ? classes.checkbox : classes.disabledCheckbox}
             />
+
             {task.assigned_to_user && (
               <Link href={route("users.edit", task.assigned_to_user.id)}>
                 <Tooltip label={task.assigned_to_user.name} openDelay={1000} withArrow>
@@ -55,6 +65,7 @@ export default function TaskRow({ task, index }) {
                 </Tooltip>
               </Link>
             )}
+
             <Text
               className={classes.name}
               size="sm"

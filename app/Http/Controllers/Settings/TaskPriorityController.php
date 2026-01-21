@@ -15,7 +15,7 @@ class TaskPriorityController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(TaskPriority::class, 'task_priority');
+        $this->authorizeResource(TaskPriority::class, 'task priority');
     }
 
     public function index(Request $request): Response

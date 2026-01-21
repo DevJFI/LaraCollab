@@ -4,7 +4,7 @@ import { isOverdue } from "@/utils/task";
 import { getInitials } from "@/utils/user";
 import { Draggable } from "@hello-pangea/dnd";
 import { Link } from "@inertiajs/react";
-import { Avatar, ColorSwatch, Group, Text, Tooltip, rem, useComputedColorScheme } from "@mantine/core";
+import { Avatar, Group, Text, Tooltip, rem, useComputedColorScheme } from "@mantine/core";
 import TaskActions from "../TaskActions";
 import classes from "./css/TaskCard.module.css";
 
@@ -22,8 +22,16 @@ export default function TaskCard({ task, index }) {
             task.completed_at !== null && classes.completed
           }`}
         >
+          {task.priority && (
+            <Tooltip label={task.priority.label + " priority"} withArrow openDelay={300}>
+              <div
+                className={classes.priorityIndicator}
+                style={{ backgroundColor: task.priority.color }}
+              />
+            </Tooltip>
+          )}
           <div {...(can("reorder task") && provided.dragHandleProps)}>
-            <Group justify="space-between" align="center">
+            <Group wrap="nowrap" justify="start" align="start" gap="xs">
               <Text
                 className={classes.name}
                 size="xs"
@@ -33,12 +41,6 @@ export default function TaskCard({ task, index }) {
               >
                 #{task.number + ": " + task.name}
               </Text>
-
-              {task.priority && (
-                <Tooltip label={task.priority.label} withArrow openDelay={300}>
-                  <ColorSwatch color={task.priority.color} size={12} />
-                </Tooltip>
-              )}
             </Group>
 
             <Group wrap="nowrap" justify="space-between">

@@ -36,7 +36,6 @@ class TaskUpdated implements ShouldBroadcast
         $this->property = $updateField;
         $this->value = $this->task->toArray()[$updateField];
 
-        // If updating a foreign key, also include the related object
         if ($updateField === 'priority_id') {
             $this->relatedData = ['priority' => $this->task->toArray()['priority']];
         }

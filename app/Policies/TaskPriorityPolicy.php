@@ -12,7 +12,7 @@ class TaskPriorityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view task_priority');
+        return $user->hasPermissionTo('view task priority');
     }
 
     /**
@@ -20,7 +20,7 @@ class TaskPriorityPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create task_priority');
+        return $user->hasPermissionTo('create task priority');
     }
 
     /**
@@ -28,7 +28,7 @@ class TaskPriorityPolicy
      */
     public function update(User $user, TaskPriority $taskPriority): bool
     {
-        return $user->hasPermissionTo('edit task_priority');
+        return $user->hasPermissionTo('edit task priority');
     }
 
     /**
@@ -36,7 +36,7 @@ class TaskPriorityPolicy
      */
     public function delete(User $user, TaskPriority $taskPriority): bool
     {
-        return $user->hasPermissionTo('delete task_priority');
+        return $user->hasPermissionTo('delete task priority');
     }
 
     /**
@@ -44,6 +44,6 @@ class TaskPriorityPolicy
      */
     public function restore(User $user, TaskPriority $taskPriority): bool
     {
-        return $user->hasPermissionTo('restore task_priority');
+        return $user->hasPermissionTo('restore task priority');
     }
 }

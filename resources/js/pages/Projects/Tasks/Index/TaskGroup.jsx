@@ -1,6 +1,6 @@
 import useTaskDrawerStore from "@/hooks/store/useTaskDrawerStore";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { ActionIcon, Group, Text, Tooltip, rem } from "@mantine/core";
+import { ActionIcon, Flex, Group, Text, Tooltip, rem } from "@mantine/core";
 import { IconGripVertical, IconPlus } from "@tabler/icons-react";
 import Task from "./Task";
 import TaskGroupActions from "./TaskGroupActions";
@@ -51,7 +51,9 @@ export default function TaskGroup({ group, tasks, ...props }) {
           </div>
           <Droppable droppableId={`group-${group.id}-tasks`} type="task">
             {(provided, snapshot) => (
-              <div
+              <Flex
+                direction="column"
+                gap="3px"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 className={snapshot.isDraggingOver ? "isDraggingOver" : ""}
@@ -60,7 +62,7 @@ export default function TaskGroup({ group, tasks, ...props }) {
                   <Task key={task.id} task={task} index={index} />
                 ))}
                 <div className={classes.placeholder}>{provided.placeholder}</div>
-              </div>
+              </Flex>
             )}
           </Droppable>
         </div>

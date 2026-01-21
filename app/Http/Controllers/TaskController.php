@@ -17,6 +17,7 @@ use App\Models\OwnerCompany;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskGroup;
+use App\Models\TaskPriority;
 use App\Services\PermissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -72,7 +73,7 @@ class TaskController extends Controller
             'project' => $project,
             'usersWithAccessToProject' => PermissionService::usersWithAccessToProject($project),
             'labels' => Label::get(['id', 'name', 'color']),
-            'priorities' => TaskPriorityResource::collection(\App\Models\TaskPriority::orderBy('order')->get()),
+            'priorities' => TaskPriorityResource::collection(TaskPriority::orderBy('order')->get()),
             'taskGroups' => $groups,
             'groupedTasks' => $groupedTasks,
             'openedTask' => $task ? $task->loadDefault() : null,

@@ -1,8 +1,9 @@
 import useTaskGroupsStore from "@/hooks/store/useTaskGroupsStore";
 import useTaskFiltersStore from "@/hooks/store/useTaskFiltersStore";
 import { usePage } from "@inertiajs/react";
-import { Button, ColorSwatch, Group, Stack, Text } from "@mantine/core";
+import { Button, ColorSwatch, Stack, Text } from "@mantine/core";
 import FilterButton from "./Filters/FilterButton";
+import classes from "./Filters/css/FilterButton.module.css";
 
 export default function Filters() {
   const { usersWithAccessToProject, labels } = usePage().props;
@@ -16,49 +17,38 @@ export default function Filters() {
       <Stack justify="flex-start" gap={24}>
         <div>
           <Text fz="xs" fw={700} tt="uppercase" mb="sm">
-            Priority sort
+            Priority
           </Text>
-          <Group gap="xs">
+          <Button.Group>
             <Button
+              className={classes.button}
               size="xs"
-              variant={prioritySort === "asc" ? "filled" : "light"}
+              variant={prioritySort === null ? "filled" : "default"}
+              radius="md"
+              onClick={clearPrioritySort}
+            >
+              Default
+            </Button>
+            <Button
+              className={classes.button}
+              size="xs"
+              variant={prioritySort === "asc" ? "filled" : "default"}
+              radius="md"
               onClick={sortHighToLow}
             >
-              High → Low
+              High
             </Button>
             <Button
+              className={classes.button}
               size="xs"
-              variant={prioritySort === "desc" ? "filled" : "light"}
+              variant={prioritySort === "desc" ? "filled" : "default"}
+              radius="md"
               onClick={sortLowToHigh}
             >
-              Low → High
+              Low
             </Button>
-            {prioritySort && (
-              <Button size="xs" variant="subtle" onClick={clearPrioritySort}>
-                Default
-              </Button>
-            )}
-          </Group>
+          </Button.Group>
         </div>
-
-        {groups.length > 0 && (
-          <div>
-            <Text fz="xs" fw={700} tt="uppercase" mb="sm">
-              Task groups
-            </Text>
-            <Stack justify="flex-start" gap={6}>
-              {groups.map((item) => (
-                <FilterButton
-                  key={item.id}
-                  selected={filters.groups.includes(item.id)}
-                  onClick={() => toggleArrayFilter("groups", item.id)}
-                >
-                  {item.name}
-                </FilterButton>
-              ))}
-            </Stack>
-          </div>
-        )}
 
         {usersWithAccessToProject.length > 0 && (
           <div>
@@ -99,6 +89,26 @@ export default function Filters() {
           </Stack>
         </div>
 
+        {labels.length > 0 && (
+          <div>
+            <Text fz="xs" fw={700} tt="uppercase" mb="sm">
+              Labels
+            </Text>
+            <Stack justify="flex-start" gap={6}>
+              {labels.map((item) => (
+                <FilterButton
+                  key={item.id}
+                  selected={filters.labels.includes(item.id)}
+                  onClick={() => toggleArrayFilter("labels", item.id)}
+                  leftSection={<ColorSwatch color={item.color} size={18} />}
+                >
+                  {item.name}
+                </FilterButton>
+              ))}
+            </Stack>
+          </div>
+        )}
+
         <div>
           <Text fz="xs" fw={700} tt="uppercase" mb="sm">
             Status
@@ -113,18 +123,17 @@ export default function Filters() {
           </Stack>
         </div>
 
-        {labels.length > 0 && (
+        {groups.length > 0 && (
           <div>
             <Text fz="xs" fw={700} tt="uppercase" mb="sm">
-              Labels
+              Task groups
             </Text>
             <Stack justify="flex-start" gap={6}>
-              {labels.map((item) => (
+              {groups.map((item) => (
                 <FilterButton
                   key={item.id}
-                  selected={filters.labels.includes(item.id)}
-                  onClick={() => toggleArrayFilter("labels", item.id)}
-                  leftSection={<ColorSwatch color={item.color} size={18} />}
+                  selected={filters.groups.includes(item.id)}
+                  onClick={() => toggleArrayFilter("groups", item.id)}
                 >
                   {item.name}
                 </FilterButton>

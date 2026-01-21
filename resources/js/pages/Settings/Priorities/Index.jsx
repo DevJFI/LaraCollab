@@ -20,7 +20,7 @@ const PrioritiesIndex = () => {
     {
       label: 'Actions',
       sortable: false,
-      visible: actionColumnVisibility('task_priority'),
+      visible: actionColumnVisibility('task priority'),
     },
   ]);
 
@@ -42,7 +42,7 @@ const PrioritiesIndex = () => {
           </Group>
         </Grid.Col>
         <Grid.Col span='content'>
-          {can('create task_priority') && (
+          {can('create task priority') && (
             <Button
               leftSection={<IconPlus size={14} />}
               radius='xl'

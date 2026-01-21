@@ -13,13 +13,13 @@ export default function TableRow({ item }) {
       <Table.Td w={100}>
         <Text fz='sm'>{item.order}</Text>
       </Table.Td>
-      {(can('edit task_priority') || can('delete task_priority')) && (
+      {(can('edit task priority') || can('delete task priority')) && (
         <Table.Td w={100}>
           <TableRowActions
             item={item}
             editRoute='settings.task-priorities.edit'
-            editPermission='edit task_priority'
-            archivePermission='delete task_priority'
+            editPermission='edit task priority'
+            archivePermission='delete task priority'
             archive={{
               route: 'settings.task-priorities.destroy',
               title: 'Delete priority',
