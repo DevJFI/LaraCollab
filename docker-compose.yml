@@ -9,10 +9,10 @@ services:
     ports:
       - "8085:80"
     environment:
-      DB_HOST: mysql-db
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      - DB_HOST=mysql-db
+      - DB_DATABASE=laracollab_db
+      - DB_USERNAME=admin
+      - DB_PASSWORD=jfisilvicultura@2026
     networks:
       - laracollab-net
     depends_on:
@@ -23,17 +23,18 @@ services:
     container_name: mysql-db
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      - MYSQL_ROOT_PASSWORD=jfisilvicultura@2026
+      - MYSQL_DATABASE=laracollab_db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=jfisilvicultura@2026
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
       - laracollab-net
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
-      retries: 3
+      test: ["CMD", "mysqladmin", "ping", "-pjfisilvicultura@2026"]
+      retries: 5
+      interval: 10s
       timeout: 5s
 
 networks:
