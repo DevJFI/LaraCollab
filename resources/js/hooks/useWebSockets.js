@@ -16,6 +16,11 @@ export default function useWebSockets() {
   } = useTaskGroupsStore();
 
   const initUserWebSocket = () => {
+    if (!window.Echo || !user) {
+      console.warn('Echo não inicializado, pulando WebSockets.');
+      return;
+    }
+
     window.Echo.private(`App.Models.User.${user.id}`).notification((notification) => {
       addNotification(notification);
 
