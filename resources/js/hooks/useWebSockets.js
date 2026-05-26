@@ -15,21 +15,29 @@ export default function useWebSockets() {
     addTaskGroupLocally, updateTaskGroupLocally, removeTaskGroupLocally, restoreTaskGroupLocally, reorderTaskGroupLocally,
   } = useTaskGroupsStore();
 
-  const initUserWebSocket = () => {
-    if (!window.Echo || !user) {
-      console.warn('Echo não inicializado, pulando WebSockets.');
+const initUserWebSocket = () => {
+    // 1. Verificação de segurança robusta
+    if (!window.Echo || typeof window.Echo.private !== 'function' || !user || !user.id) {
+      console.warn('WebSockets não configurados ou usuário inválido.');
       return;
     }
 
-    window.Echo.private(`App.Models.User.${user.id}`).notification((notification) => {
-      addNotification(notification);
+    try {
+      // 2. Proteção adicional: garantimos que o Echo só tente conectar se estiver instanciado
+      window.Echo.private(`App.Models.User.${user.id}`)
+        .notification((notification) => {
+          addNotification(notification);
 
-      showNotification({
-        title: notification.title,
-        message: notification.subtitle,
-        autoClose: 8000,
-      });
-    });
+          showNotification({
+            title: notification.title,
+            message: notification.subtitle,
+            autoClose: 8000,
+          });
+        });
+    } catch (error) {
+      // 3. Bloco try-catch para capturar qualquer erro interno do Echo sem derrubar o React
+      console.error('Erro ao inicializar canal privado:', error);
+    }
   };
 
   const initProjectWebSocket = (project) => {
